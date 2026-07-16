@@ -12,7 +12,9 @@ source:
 build:
   number: 0
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
-  skip: true  # [py<38]
+  # ModuleNotFoundError: No module named 'pandas.core.col'
+  # Unabe use polars>3 with py310
+  skip: true  # [py<38 or py>310]
 
 requirements:
   host:
