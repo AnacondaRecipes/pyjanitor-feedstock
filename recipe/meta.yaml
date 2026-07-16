@@ -1,49 +1,52 @@
-{% set python_min = "3.11" %}
 {% set name = "pyjanitor" %}
 {% set version = "0.32.23" %}
 
-
 package:
-  name: {{ name|lower }}
+  name: {{ name }}
   version: {{ version }}
 
 source:
-  url: https://github.com/pyjanitor-devs/pyjanitor/archive/v{{ version }}.tar.gz
-  sha256: e7c6ac87268fa03b7c7a2988a4adf4260be80c0c8f6f5badfd2e10c2e8254c3a
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: 9570b1768bb11d9964d2f46d3206793d04e4a367065178d95786caeb987f75d3
 
 build:
   number: 0
-  noarch: python
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  skip: true  # [py<38]
 
 requirements:
   host:
-    - python {{ python_min }}
-    - setuptools
     - pip
+    - python
+    - wheel
+    - setuptools >=61.0
   run:
-    - janitor-rs >=0.6.1,<0.7
-    - python >={{ python_min }}
+    - python
+    - natsort >=8.4.0,<9
     - pandas-flavor >=0.8.1,<0.9
     - multipledispatch
-    - natsort >=8.4.0,<9
-    - pandas
-    - pandas_flavor >=0.5
-    - requests
-    - scikit-learn
     - scipy
-    - xarray
-    - xlrd
+    - janitor-rs >=0.6.1,<0.7
+  run_constrained:
+    - isort >=4.3.18
+    - ipython >7.31.1
 
 test:
-  requires:
-    - python {{ python_min }}
-    - pip
-  commands:
-    - pip check
+  source_files:
+    - tests
   imports:
     - janitor
     - janitor.accessors
+  commands:
+    - pip check
+    - pytest -v tests
+  requires:
+    - pip
+    - pytest >=3.4.2
+    - pytest-xdist
+    - hypothesis >=4.4.0
+    - ipython >7.31.1
+    - isort >=4.3.18
 
 about:
   home: https://github.com/pyjanitor-devs/pyjanitor
