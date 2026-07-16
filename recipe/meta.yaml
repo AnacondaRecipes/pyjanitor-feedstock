@@ -14,7 +14,7 @@ build:
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   # ModuleNotFoundError: No module named 'pandas.core.col'
   # Unabe use pandas>3 with py310
-  skip: true  # [py<38 or py>310]
+  skip: true  # [py<311]
 
 requirements:
   host:
