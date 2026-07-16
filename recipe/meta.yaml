@@ -47,6 +47,10 @@ test:
     - hypothesis >=4.4.0
     - ipython >7.31.1
     - isort >=4.3.18
+    - requests
+    - unyt
+    - openpyxl
+    - polars >=1.0.0
 
 about:
   home: https://github.com/pyjanitor-devs/pyjanitor
