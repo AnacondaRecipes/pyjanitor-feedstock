@@ -10,7 +10,7 @@ source:
   sha256: e7c6ac87268fa03b7c7a2988a4adf4260be80c0c8f6f5badfd2e10c2e8254c3a
 
 build:
-  number: 0
+  number: 1
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   # ModuleNotFoundError: No module named 'pandas.core.col'
   # Unable to use pandas>3 with py310
@@ -29,8 +29,7 @@ requirements:
     - multipledispatch
     - scipy
     - janitor-rs >=0.6.1,<0.7
-    # No in tests, but needed for import janitor
-    - polars >=1.0.0
+
   run_constrained:
     - isort >=4.3.18
     - ipython >7.31.1
