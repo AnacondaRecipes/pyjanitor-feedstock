@@ -1,49 +1,48 @@
-{% set python_min = "3.11" %}
 {% set name = "pyjanitor" %}
 {% set version = "0.32.23" %}
 
-
 package:
-  name: {{ name|lower }}
+  name: {{ name }}
   version: {{ version }}
 
 source:
-  url: https://github.com/pyjanitor-devs/pyjanitor/archive/v{{ version }}.tar.gz
+  url: https://github.com/{{ name }}-devs/{{ name }}/archive/refs/tags/v{{ version }}.tar.gz
   sha256: e7c6ac87268fa03b7c7a2988a4adf4260be80c0c8f6f5badfd2e10c2e8254c3a
 
 build:
   number: 0
-  noarch: python
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  # ModuleNotFoundError: No module named 'pandas.core.col'
+  # Unable to use pandas>3 with py310
+  skip: true  # [py<311]
 
 requirements:
   host:
-    - python {{ python_min }}
-    - setuptools
     - pip
+    - python
+    - wheel
+    - setuptools >=61.0
   run:
-    - janitor-rs >=0.6.1,<0.7
-    - python >={{ python_min }}
+    - python
+    - natsort >=8.4.0,<9
     - pandas-flavor >=0.8.1,<0.9
     - multipledispatch
-    - natsort >=8.4.0,<9
-    - pandas
-    - pandas_flavor >=0.5
-    - requests
-    - scikit-learn
     - scipy
-    - xarray
-    - xlrd
+    - janitor-rs >=0.6.1,<0.7
+    # No in tests, but needed for import janitor
+    - polars >=1.0.0
+  run_constrained:
+    - isort >=4.3.18
+    - ipython >7.31.1
 
 test:
-  requires:
-    - python {{ python_min }}
-    - pip
-  commands:
-    - pip check
   imports:
     - janitor
     - janitor.accessors
+  commands:
+    - pip check
+  requires:
+    - pip
 
 about:
   home: https://github.com/pyjanitor-devs/pyjanitor
@@ -51,6 +50,7 @@ about:
   license_family: MIT
   license_file: LICENSE
   summary: Tools for cleaning pandas DataFrames
+  description: Tools for cleaning pandas DataFrames
   doc_url: http://pyjanitor.readthedocs.io
   dev_url: https://github.com/pyjanitor-devs/pyjanitor
 
