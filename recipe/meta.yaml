@@ -29,30 +29,20 @@ requirements:
     - multipledispatch
     - scipy
     - janitor-rs >=0.6.1,<0.7
+    # No in tests, but needed for import janitor
+    - polars >=1.0.0
   run_constrained:
     - isort >=4.3.18
     - ipython >7.31.1
 
 test:
-  source_files:
-    - tests
   imports:
     - janitor
     - janitor.accessors
   commands:
     - pip check
-    - pytest -v tests
   requires:
     - pip
-    - pytest >=3.4.2
-    - pytest-xdist
-    - hypothesis >=4.4.0
-    - ipython >7.31.1
-    - isort >=4.3.18
-    - requests
-    - unyt
-    - openpyxl
-    - polars >=1.0.0
 
 about:
   home: https://github.com/pyjanitor-devs/pyjanitor
