@@ -1,47 +1,39 @@
 {% set name = "pyjanitor" %}
 {% set version = "0.31.0" %}
 
-
 package:
-  name: {{ name|lower }}
+  name: {{ name }}
   version: {{ version }}
 
 source:
-  url: https://github.com/pyjanitor-devs/pyjanitor/archive/v{{ version }}.tar.gz
+  url: https://github.com/{{ name }}-devs/{{ name }}/archive/refs/tags/v{{ version }}.tar.gz
   sha256: 8c05f9687ebdf8428c71a9c80d5da8a5c1c77bddf6067dbf5c38036ffd15be5a
 
 build:
   number: 0
-  noarch: python
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
 requirements:
   host:
-    - python {{ python_min }}
-    - setuptools
     - pip
+    - python
+    - setuptools
   run:
-    - python >={{ python_min }}
+    - python
+    - natsort
     - pandas-flavor
     - multipledispatch
-    - natsort
-    - pandas
-    - pandas_flavor >=0.5
-    - requests
-    - scikit-learn
     - scipy
     - xarray
-    - xlrd
 
 test:
-  requires:
-    - python {{ python_min }}
-    - pip
-  commands:
-    - pip check
   imports:
     - janitor
     - janitor.accessors
+  commands:
+    - pip check
+  requires:
+    - pip
 
 about:
   home: https://github.com/pyjanitor-devs/pyjanitor
@@ -49,7 +41,8 @@ about:
   license_family: MIT
   license_file: LICENSE
   summary: Tools for cleaning pandas DataFrames
-  doc_url: http://pyjanitor.readthedocs.io
+  description: Tools for cleaning pandas DataFrames
+  doc_url: https://pyjanitor.readthedocs.io
   dev_url: https://github.com/pyjanitor-devs/pyjanitor
 
 extra:
